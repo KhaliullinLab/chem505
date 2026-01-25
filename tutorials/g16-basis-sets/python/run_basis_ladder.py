@@ -49,14 +49,14 @@ def write_gjf(
     charge: int,
     multiplicity: int,
     xyz_lines: Iterable[str],
-    mem: str = "2GB",
+    mem: str = "1GB",
     nproc: int = 4,
 ) -> None:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     text = "\n".join(
         [
             f"%Mem={mem}",
-            f"%NProcShared={nproc}",
+            #f"%NProcShared={nproc}",
             f"%Chk={chk_name}",
             route,
             "",
@@ -93,14 +93,16 @@ def run_g16(input_path: Path) -> Path:
     )
 
 
-_SCF_RE = re.compile(r"SCF Done:\s+E\([A-Z-]+\)\s+=\s+(-?\d+\.\d+)")
-
-
 def parse_scf_energy_hartree(text: str) -> float:
-    matches = _SCF_RE.findall(text)
-    if not matches:
-        raise ValueError("Could not find 'SCF Done:' energy in output.")
-    return float(matches[-1])
+    """Extract SCF energy from Gaussian output.
+    
+    Looks for the last occurrence of 'SCF Done:' and extracts the energy
+    from the 5th word (index 4) in that line.
+    """
+    for line in reversed(text.splitlines()):
+        if "SCF Done:" in line:
+            return float(line.split()[4])
+    raise ValueError("Could not find 'SCF Done:' energy in output.")
 
 
 def main() -> None:
@@ -114,11 +116,11 @@ def main() -> None:
     basis_sets = [
         "cc-pVDZ",
         "cc-pVTZ",
-        # Optional extension (comment in if laptops allow)
-        # "cc-pVQZ",
+        # Optional extension to QZ basis sets (comment in if laptops allow)
+        "cc-pVQZ",
         "aug-cc-pVDZ",
         "aug-cc-pVTZ",
-        # "aug-cc-pVQZ",
+        "aug-cc-pVQZ",
     ]
 
     # Use unrestricted DFT consistently for the open-shell neutral (triplet) and anion (doublet).
@@ -133,7 +135,7 @@ def main() -> None:
 
             write_gjf(
                 out_path=gjf,
-                chk_name=f"{stem}.chk",
+                chk_name=f"{results_dir}/{stem}.chk",
                 route=f"#P {method}/{basis} Opt SCF=Tight Integral=UltraFine NoSymm",
                 title=f"{sp.name} {method}/{basis} Opt",
                 charge=sp.charge,

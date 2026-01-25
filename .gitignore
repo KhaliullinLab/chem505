@@ -3,6 +3,7 @@ scripts/
 figures/
 env/
 data/
+results/
 
 # Python
 __pycache__/
@@ -46,6 +47,10 @@ Thumbs.db
 # Temporary files
 *.tmp
 ~$*
+
+# Gaussian output files
+*.chk
+*.log
 
 # Figures output (if you want to exclude generated figures)
 # figures/
