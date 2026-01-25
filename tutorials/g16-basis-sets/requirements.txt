@@ -1,0 +1,4 @@
+cclib
+numpy
+pandas
+matplotlib

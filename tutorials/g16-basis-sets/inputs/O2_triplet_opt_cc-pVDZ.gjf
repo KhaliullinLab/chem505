@@ -1,0 +1,10 @@
+%Mem=1GB
+%Chk=O2_cc-pVDZ.chk
+#P UBLYP/cc-pVDZ Opt SCF=Tight Integral=UltraFine NoSymm
+
+O2 (triplet) geometry optimization
+
+0 3
+O   0.000000   0.000000   0.000000
+O   0.000000   0.000000   1.210000
+
