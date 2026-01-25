@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
@@ -107,7 +106,6 @@ def parse_scf_energy_hartree(text: str) -> float:
 
 def main() -> None:
     root = Path(__file__).resolve().parents[1]
-    inputs_dir = root / "inputs"
     results_dir = root / "results"
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -163,6 +161,8 @@ def main() -> None:
         ea_ev = ea_h * HARTREE_TO_EV
 
         print(f"[EA] basis={basis:12s}  EA(elec)={ea_ev: .3f} eV")
+
+    print("[EA] EXPERIMENTAL EA= 0.45 eV")
 
     # Write a simple CSV summary for plotting/analysis.
     try:
