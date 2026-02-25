@@ -1,0 +1,64 @@
+    # GOOD REFERENCE VALUES (for comparison after tuning):
+    #   N_MOLECULES = 1000
+    #   N_EPOCHS = 100  
+    #   LEARNING_RATE = 1e-3
+    #   HIDDEN_SIZES = [64, 32]
+    #   TRAIN_SPLIT = 0.8
+    #   R_CUT = 6.0
+    #   G2_PARAMS: 12 radial functions with varied η and R_s
+    #   G4_PARAMS: 8 angular functions with varied ζ and λ
+
+    # GOOD REFERENCE VALUES:
+    #   R_CUT = 6.0
+    #   G2_PARAMS = [
+    #       [0.05, 0.0], [0.05, 1.0], [0.05, 2.0],
+    #       [0.2, 0.0], [0.2, 1.0], [0.2, 2.0], [0.2, 3.0],
+    #       [0.5, 1.0], [0.5, 2.0], [0.5, 3.0],
+    #       [1.0, 1.5], [1.0, 2.5],
+    #   ]
+    #   G4_PARAMS = [
+    #       [1, 1, 0.01], [1, -1, 0.01],
+    #       [2, 1, 0.01], [2, -1, 0.01],
+    #       [4, 1, 0.01], [4, -1, 0.01],
+    #       [8, 1, 0.01], [16, 1, 0.01],
+    #   ]
+
+    # -------------------------------------------------------------------------
+    # G2 parameters: Radial symmetry functions
+    # -------------------------------------------------------------------------
+    # Each (η, R_s) pair creates one radial function per element type
+    # η controls width: small η = broad peak, large η = narrow peak
+    # R_s controls center: where the Gaussian is centered
+    g2_params = [
+        [0.05, 0.0],   # Very broad, centered at 0
+        [0.05, 1.0],   # Very broad, centered at 1 Å
+        [0.05, 2.0],   # Very broad, centered at 2 Å
+        [0.2, 0.0],    # Medium width
+        [0.2, 1.0],
+        [0.2, 2.0],
+        [0.2, 3.0],
+        [0.5, 1.0],    # Narrower
+        [0.5, 2.0],
+        [0.5, 3.0],
+        [1.0, 1.5],    # Narrow peaks for fine structure
+        [1.0, 2.5],
+    ]
+    
+    # -------------------------------------------------------------------------
+    # G4 parameters: Angular symmetry functions
+    # -------------------------------------------------------------------------
+    # Each (ζ, λ, η) triplet creates one angular function per element pair
+    # ζ controls angular resolution: higher ζ = sharper angular peaks
+    # λ = +1: peak at 0° (linear), λ = -1: peak at 180°
+    # η controls radial decay
+    g4_params = [
+        [1, 1, 0.01],   # Broad angular, λ=+1 (favors 0°)
+        [1, -1, 0.01],  # Broad angular, λ=-1 (favors 180°)
+        [2, 1, 0.01],   # Medium angular resolution
+        [2, -1, 0.01],
+        [4, 1, 0.01],   # Higher angular resolution
+        [4, -1, 0.01],
+        [8, 1, 0.01],   # Sharp angular peaks
+        [16, 1, 0.01],  # Very sharp angular peaks
+    ]
+
